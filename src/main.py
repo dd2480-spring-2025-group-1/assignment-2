@@ -1,5 +1,6 @@
 import logging
 import time
+import uvicorn
 from typing import Union
 from uuid import uuid4
 from fastapi import FastAPI, BackgroundTasks, status, Response
@@ -184,4 +185,4 @@ def get_ci_log_details(
 
 
 if __name__ == "__main__":
-    app.run()
+    uvicorn.run("main:app", host="0.0.0.0", port=8001)
