@@ -1,0 +1,33 @@
+
+services:
+  api:
+    build: .
+    ports:
+      - "8001:8001"
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: /home/myuser/code
+    command: python -m fastapi run src/main.py --host 0.0.0.0 --port 8001
+    profiles: 
+      - prod
+  api-dev:
+    build: .
+    ports:
+      - "8001:8001"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /home/myuser/code/src
+        - action: rebuild
+          path: ./requirements.txt
+          target: /home/myuser/code/requirements.txt
+    command: python -m fastapi dev src/main.py --host 0.0.0.0 --port 8001
+    profiles: 
+      - dev
+
+networks:
+  default:
+    name: api-services
