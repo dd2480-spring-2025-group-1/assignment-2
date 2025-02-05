@@ -59,7 +59,7 @@ def setup_dependencies(target_folder: str) -> str:
     if not check_if_folder_exists(target_folder):
         raise Exception(f"The target folder ${target_folder} does not exist.")
 
-    command = "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements-dev.txt"
+    command = "python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-dev.txt"
     ret = subprocess.run(command, capture_output=True, shell=True, cwd=target_folder)
 
     if ret.returncode != 0:
