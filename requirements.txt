@@ -1,5 +1,2 @@
-uvicorn
+uvicorn[standard]
 fastapi
-fastgithub
-snapshottest==1.0.0a1
-flake8
