@@ -78,13 +78,13 @@ class ActionsTest(unittest.TestCase):
 
     # Tests for run_linter_check
     def test_linting_without_errors(self):
-        output = run_linter_check("tests/fixtures/syntax_correct")
-        self.assertTrue(output[0])
+        check, _ = run_linter_check("tests/fixtures/syntax_correct")
+        self.assertTrue(check)
 
     def test_linting_with_errors(self):
-        output = run_linter_check("tests/fixtures/syntax_error")
-        self.assertFalse(output[0])
-        self.assertTrue("E999 SyntaxError" in output[1])
+        check, logs = run_linter_check("tests/fixtures/syntax_error")
+        self.assertFalse(check)
+        self.assertTrue("E999 SyntaxError" in logs)
 
 
 if __name__ == "__main__":
