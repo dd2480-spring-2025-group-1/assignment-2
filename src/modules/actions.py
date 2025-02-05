@@ -1,6 +1,7 @@
 import subprocess
 from src.modules.utils import check_if_folder_exists, create_folder
 
+
 def clone_repo(url: str, destination: str) -> str:
     """
     Clone the repository from the given URL to the destination folder.
