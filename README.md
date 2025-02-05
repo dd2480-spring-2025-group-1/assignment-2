@@ -28,11 +28,11 @@ Optionally, you can find the VS code extensions for Black formatter and Flake8 l
 Despite the ability to run the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
 ```bash
 # start development (with hot reload)
-docker compose --profile dev up --watch
+docker compose --profile dev up --watch --build
 # production environment (automatic rebuild upon file changes)
-docker compose --profile prod up --watch
+docker compose --profile prod up --watch --build
 # production environment (requires manual rebuilding)
-docker compose --profile prod up
+docker compose --profile prod up --build
 ```
 ```bash
 # alternatively, start development locally
