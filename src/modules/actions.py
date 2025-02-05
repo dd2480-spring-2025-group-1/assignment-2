@@ -18,7 +18,9 @@ def clone_repo(url: str, destination: str) -> str:
     ret = subprocess.run(command, capture_output=True, shell=True, cwd=destination)
 
     if ret.returncode != 0:
-        raise Exception(f"Failed cloning into repository {url}.")
+        err = Exception(f"Failed cloning into repository {url}.")
+        err.add_note(ret.stderr.decode())
+        raise err
 
     return ret.stdout.decode()
 
@@ -38,7 +40,9 @@ def checkout_ref(target_folder: str, ref: str) -> str:
     ret = subprocess.run(command, capture_output=True, shell=True, cwd=target_folder)
 
     if ret.returncode != 0:
-        raise Exception(f"Failed to checkout the commit {ref} in the repository.")
+        err = Exception(f"Failed to checkout the commit {ref} in the repository.")
+        err.add_note(ret.stderr.decode())
+        raise err
 
     return ret.stdout.decode()
 
@@ -59,7 +63,9 @@ def setup_dependencies(target_folder: str) -> str:
     ret = subprocess.run(command, capture_output=True, shell=True, cwd=target_folder)
 
     if ret.returncode != 0:
-        raise Exception(f"Failed to install dependencies for ${target_folder}.")
+        err = Exception(f"Failed to install dependencies for {target_folder}.")
+        err.add_note(ret.stderr.decode())
+        raise err
 
     return ret.stdout.decode()
 
