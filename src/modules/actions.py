@@ -1,3 +1,7 @@
+import subprocess
+from src.modules.utils import check_if_folder_exists, create_folder
+
+
 def clone_repo(url: str, destination: str) -> str:
     """
     Clone the repository from the given URL to the destination folder.
@@ -7,8 +11,18 @@ def clone_repo(url: str, destination: str) -> str:
     :return: The CLI logs from the cloning process.
     :raises: Exception if the cloning fails.
     """
-    # TODO: Implement this function
-    pass
+    if not check_if_folder_exists(destination):
+        create_folder(destination)
+
+    command = f"git clone {url}"
+    ret = subprocess.run(command, capture_output=True, shell=True, cwd=destination)
+
+    if ret.returncode != 0:
+        err = Exception(f"Failed cloning into repository {url}.")
+        err.add_note(ret.stderr.decode())
+        raise err
+
+    return ret.stdout.decode()
 
 
 def checkout_ref(target_folder: str, ref: str) -> str:
@@ -17,23 +31,43 @@ def checkout_ref(target_folder: str, ref: str) -> str:
     :param target_folder: The folder of the repository.
     :param ref: The commit reference to checkout.
     :return: The CLI logs from the checkout process.
-    :raises: Exception if the checkout fails.
+    :raises: Exception if the checkout fails, e.g., the commit SHA or the repo folder does not exist.
     """
-    # TODO: Implement this function
-    pass
+    if not check_if_folder_exists(target_folder):
+        raise Exception(f"The target folder ${target_folder} does not exist.")
+
+    command = f"git checkout {ref}"
+    ret = subprocess.run(command, capture_output=True, shell=True, cwd=target_folder)
+
+    if ret.returncode != 0:
+        err = Exception(f"Failed to checkout the commit {ref} in the repository.")
+        err.add_note(ret.stderr.decode())
+        raise err
+
+    return ret.stdout.decode()
 
 
 def setup_dependencies(target_folder: str) -> str:
     """
     Setup and install dependencies for the project.
     This function will invoke python3 to create a virtual environment,
-    then install the dependencies listed in `requirements.txt`.
+    then install the dependencies listed in `requirements-dev.txt`.
     :param destination: The root folder of the project.
     :return: The CLI logs from the setup process.
     :raises: Exception if the target folder does not exist or if the installation fails.
     """
-    # TODO: Implement this function
-    pass
+    if not check_if_folder_exists(target_folder):
+        raise Exception(f"The target folder ${target_folder} does not exist.")
+
+    command = "python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-dev.txt"
+    ret = subprocess.run(command, capture_output=True, shell=True, cwd=target_folder)
+
+    if ret.returncode != 0:
+        err = Exception(f"Failed to install dependencies for {target_folder}.")
+        err.add_note(ret.stderr.decode())
+        raise err
+
+    return ret.stdout.decode()
 
 
 def run_linter_check(target_folder: str) -> tuple[bool, str]:
