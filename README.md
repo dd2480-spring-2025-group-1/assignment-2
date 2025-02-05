@@ -36,7 +36,7 @@ docker compose --profile prod up
 ```
 ```bash
 # alternatively, start development locally
-python -m fastapi dev src/main.py --port 8001
+uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
 # you can only run unit tests locally
 python -m unittest
 ```
