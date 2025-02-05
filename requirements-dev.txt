@@ -1,4 +1,4 @@
-uvicorn
+uvicorn[standard]
 fastapi
 flake8
 black

@@ -9,7 +9,7 @@ services:
         - action: rebuild
           path: .
           target: /home/myuser/code
-    command: python -m fastapi run src/main.py --host 0.0.0.0 --port 8001
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8001
     profiles: 
       - prod
   api-dev:
@@ -24,7 +24,7 @@ services:
         - action: rebuild
           path: ./requirements.txt
           target: /home/myuser/code/requirements.txt
-    command: python -m fastapi dev src/main.py --host 0.0.0.0 --port 8001
+    command: uvicorn src.main:app --port 8001 --reload-exclude ./temp/** --reload
     profiles: 
       - dev
 
