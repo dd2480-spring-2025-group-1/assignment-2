@@ -9,14 +9,14 @@ For more information, please refer to the course [DD2480](https://www.kth.se/stu
 ## How to setup
 
 The prerequisites:
-- Python >=3.12
+- Python <=3.11
 - Git
 - Docker
 
 As a developer, you should first run the following:
 ```bash
 # activate venv to avoid package conflicts
-python3.12 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 # install required packages, and setup pre-commit hooks
 pip install -r requirements-dev.txt 
