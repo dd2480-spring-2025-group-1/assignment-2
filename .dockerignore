@@ -1,0 +1,10 @@
+# Basic ignores
+.git
+__pycache__
+.venv
+
+# Custom ignores for this project
+logs
+temp
+tests
+workflows

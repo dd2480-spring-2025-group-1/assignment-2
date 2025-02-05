@@ -8,31 +8,44 @@ For more information, please refer to the course [DD2480](https://www.kth.se/stu
 
 ## How to setup
 
-### Prerequisites
+The prerequisites:
+- Python >=3.12
+- Git
+- Docker
 
-You need to have Python 3.12 installed, then run `pip3 install -r requirements.txt` to installed the required packages.
-
-> Note that Python versions >=3.12 might be supported, but this software has only been extensively tested on Python 3.12.
-
-For developers, it is recommended to use [venv](https://docs.python.org/3/library/venv.html), to avoid conflicts in package resolution (as well as scenarios like "it works on my machine"). You can then run `pip install -r requirements-dev.txt` to install the required packages.
-
-In additional, we use [Black](https://github.com/psf/black) as our formatter, and [Flake8](https://github.com/PyCQA/flake8) as our linter. Please run `pre-commit install` to setup your pre-commit hooks, which will run automatic checks on your file formats.
-
-> If desired, you can find the VS code extensions for them [here](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter), and [here](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8) respectively.
->
-> To run the formatter in CLI, simply do `python -m black .` to format all your files.
-
-### How to use the program
-
+As a developer, you should first run the following:
+```bash
+# activate venv to avoid package conflicts
+python3.12 -m venv .venv
+source .venv/bin/activate
+# install required packages, and setup pre-commit hooks
+pip install -r requirements-dev.txt 
+pre-commit install
 ```
-python3 -m fastapi dev src/main.py --port 8001
-python3 -m fastapi run src/main.py --port 8001
-python3 -m unittest
+
+Optionally, you can find the VS code extensions for Black formatter and Flake8 linter [here](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) and [there](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8).
+
+Despite the ability to run the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
+```bash
+# start development (with hot reload)
+docker compose --profile dev up --watch --build
+# production environment (automatic rebuild upon file changes)
+docker compose --profile prod up --watch --build
+# production environment (requires manual rebuilding)
+docker compose --profile prod up --build
 ```
+```bash
+# alternatively, start development locally
+uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
+# you can only run unit tests locally
+python -m unittest
+```
+
+Either way, after serving the application, you should now see the API docs available at http://localhost:8081.
 
 ## Project specifications
 
-TBD
+⚠️ Note that HTTPS is currently not supported.
 
 ## Statement of contributions
 
