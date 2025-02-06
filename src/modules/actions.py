@@ -82,7 +82,7 @@ def run_linter_check(target_folder: str) -> tuple[bool, str]:
     if not check_if_folder_exists(target_folder):
         raise ValueError(f"The provided path {target_folder} is not a valid directory.")
 
-    flake_command = "flake8 --select E999 ."
+    flake_command = "flake8 --select E9,F63,F82,F7 ."
     result = subprocess.run(
         flake_command, capture_output=True, shell=True, cwd=target_folder
     )
