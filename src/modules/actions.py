@@ -93,5 +93,19 @@ def run_tests(target_folder: str) -> tuple[bool, str]:
     :return: True if all the tests pass, False if some tests fail. Also return the CLI logs from the test process.
     :raises: Exception if the target folder does not exist.
     """
-    # TODO: Implement this function and clean up mock return value.
-    return (True, "Mock logs: All tests passed.")
+    if not check_if_folder_exists(target_folder):
+        raise ValueError(f"The provided path {target_folder} is not a valid directory.")
+
+    test_command = "python -m unittest"
+    result = subprocess.run(
+        test_command, capture_output=True, shell=True, cwd=target_folder
+    )
+
+    success = False
+
+    if result.stdout:
+        logs = result.stdout.decode()
+        if "OK" in logs:
+            success = True
+
+    return (success, logs)
