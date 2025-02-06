@@ -78,13 +78,29 @@ class ActionsTest(unittest.TestCase):
 
     # Tests for run_linter_check
     def test_linting_without_errors(self):
-        check, _ = run_linter_check("tests/fixtures/syntax_correct")
+        check, _ = run_linter_check("tests/fixtures/flake8_tests/syntax_correct")
         self.assertTrue(check)
 
-    def test_linting_with_errors(self):
-        check, logs = run_linter_check("tests/fixtures/syntax_error")
+    def test_linting_with_E9_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_E9")
         self.assertFalse(check)
-        self.assertTrue("E999 SyntaxError" in logs)
+        self.assertTrue("E9" in logs)
+
+    def test_linting_with_F7_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F7")
+        self.assertFalse(check)
+        self.assertTrue("F7" in logs)
+
+    # Did not manage to find examples that would trigger F63
+    # def test_linting_with_F63_errors(self):
+    #     check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F63")
+    #     self.assertFalse(check)
+    #     self.assertTrue("F63" in logs)
+
+    def test_linting_with_F82_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F82")
+        self.assertFalse(check)
+        self.assertTrue("F82" in logs)
 
 
 if __name__ == "__main__":
