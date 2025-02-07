@@ -90,11 +90,11 @@ class ActionsTest(unittest.TestCase):
         self.assertFalse(check)
         self.assertTrue("F7" in logs)
 
-    # Did not manage to find examples that would trigger F63
-    # def test_linting_with_F63_errors(self):
-    #     check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F63")
-    #     self.assertFalse(check)
-    #     self.assertTrue("F63" in logs)
+    def test_linting_with_F63_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F63")
+        self.assertFalse(check)
+        self.assertTrue("F631" in logs)
+        self.assertTrue("F632" in logs)
 
     def test_linting_with_F82_errors(self):
         check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F82")
