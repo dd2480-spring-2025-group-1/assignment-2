@@ -2,6 +2,13 @@
 line-length = 88
 extend-exclude = '''
 (
-  ^test/snapshots/*
+  tests/snapshots/* |
+  tests/fixtures/*
+)
+'''
+force-exclude = '''
+(
+  tests/snapshots/* |
+  tests/fixtures/*
 )
 '''

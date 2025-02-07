@@ -2,13 +2,17 @@ repos:
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.8.0
     hooks:
+      # config file is automatically picked up, and we need to use --force-exclude for hooks.
+      # see https://github.com/psf/black/issues/1985#issuecomment-778659648
       - id: black
         language_version: python3.11
-        exclude: ^test/snapshots/
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
       - id: flake8
+        # config file is picked up, but --exclude is ignored for hooks, and we need to set it here.
+        # see https://flake8.pycqa.org/en/latest/user/using-hooks.html
+        exclude: ^tests/(snapshots|fixtures)/
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
