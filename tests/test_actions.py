@@ -9,7 +9,6 @@ from src.modules.utils import (
     check_if_file_exists,
     check_if_folder_exists,
     remove_folder,
-    write_to_file,
 )
 
 

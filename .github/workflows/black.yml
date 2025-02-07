@@ -18,4 +18,4 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Run format check
         run: |
-          python -m black --check --extend-exclude tests/fixtures .
+          python -m black --check .
