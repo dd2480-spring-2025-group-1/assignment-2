@@ -86,12 +86,13 @@ def run_linter_check(target_folder: str) -> tuple[bool, str]:
     result = subprocess.run(
         flake_command, capture_output=True, shell=True, cwd=target_folder
     )
+
+    success = result.returncode == 0
+
     if result.stdout:
-        logs = result.stdout.decode()
-        success = False
+        logs = "Linting Log: \n" + result.stdout.decode()
     else:
         logs = "Linting Log: No syntax errors found."
-        success = True
 
     return (success, logs)
 
