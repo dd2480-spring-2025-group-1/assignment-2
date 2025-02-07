@@ -86,6 +86,7 @@ def run_linter_check(target_folder: str) -> tuple[bool, str]:
     result = subprocess.run(
         flake_command, capture_output=True, shell=True, cwd=target_folder
     )
+
     if result.stdout:
         logs = result.stdout.decode()
         success = False
@@ -112,11 +113,11 @@ def run_tests(target_folder: str) -> tuple[bool, str]:
         test_command, capture_output=True, shell=True, cwd=target_folder
     )
 
-    success = False
+    success = result.returncode == 0
 
-    if result.stdout:
-        logs = result.stdout.decode()
-        if "OK" in logs:
-            success = True
+    if result.stderr:
+        logs = "Test Log: \n" + result.stderr.decode()
+    else:
+        logs = "Test Log: No test results found."
 
     return (success, logs)
