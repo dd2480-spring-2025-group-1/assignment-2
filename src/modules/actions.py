@@ -78,11 +78,23 @@ def run_linter_check(target_folder: str) -> tuple[bool, str]:
     :return: True if the linter passes, False if the linter fails. Also return the CLI logs from the linter process.
     :raises: Exception if the target folder does not exist.
     """
-    # TODO: Implement this function and clean up mock return value.
-    # Note that we should call Flake8, but only check for E999 errors (syntax errors).
-    # See https://flake8.pycqa.org/en/latest/user/violations.html#selecting-violations-with-flake8 and
-    # https://flake8.pycqa.org/en/latest/user/error-codes.html for more information.
-    return (True, "Mock logs: No syntax errors found.")
+
+    if not check_if_folder_exists(target_folder):
+        raise ValueError(f"The provided path {target_folder} is not a valid directory.")
+
+    flake_command = "flake8 --select E9,F63,F82,F7 ."
+    result = subprocess.run(
+        flake_command, capture_output=True, shell=True, cwd=target_folder
+    )
+
+    success = result.returncode == 0
+
+    if result.stdout:
+        logs = "Linting Log: \n" + result.stdout.decode()
+    else:
+        logs = "Linting Log: No syntax errors found."
+
+    return (success, logs)
 
 
 def run_tests(target_folder: str) -> tuple[bool, str]:

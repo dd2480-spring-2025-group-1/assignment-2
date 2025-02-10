@@ -1,5 +1,10 @@
 import unittest
-from src.modules.actions import checkout_ref, clone_repo, setup_dependencies
+from src.modules.actions import (
+    checkout_ref,
+    clone_repo,
+    setup_dependencies,
+    run_linter_check,
+)
 from src.modules.utils import (
     check_if_file_exists,
     check_if_folder_exists,
@@ -69,6 +74,32 @@ class ActionsTest(unittest.TestCase):
 
         with self.assertRaises(Exception):
             setup_dependencies(self.ephemeral_folder + "assignment-1")
+
+    # Tests for run_linter_check
+    def test_linting_without_errors(self):
+        check, _ = run_linter_check("tests/fixtures/flake8_tests/syntax_correct")
+        self.assertTrue(check)
+
+    def test_linting_with_E9_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_E9")
+        self.assertFalse(check)
+        self.assertTrue("E9" in logs)
+
+    def test_linting_with_F7_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F7")
+        self.assertFalse(check)
+        self.assertTrue("F7" in logs)
+
+    def test_linting_with_F63_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F63")
+        self.assertFalse(check)
+        self.assertTrue("F631" in logs)
+        self.assertTrue("F632" in logs)
+
+    def test_linting_with_F82_errors(self):
+        check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F82")
+        self.assertFalse(check)
+        self.assertTrue("F82" in logs)
 
 
 if __name__ == "__main__":
