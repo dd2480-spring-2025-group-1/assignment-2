@@ -8,12 +8,14 @@ from src.modules.utils import (
 )
 
 
-def get_job_logs(directory: str = "./logs") -> list[str]:
+def get_job_logs(
+    directory: str = "./logs", file_name: str = "log_list.json"
+) -> list[str]:
     """
     Returns a list of job log IDs that are available.
     """
 
-    LOG_LIST_FILE = os.path.join(directory, "log_list.json")
+    LOG_LIST_FILE = os.path.join(directory, file_name)
 
     if not check_if_folder_exists(directory):
         create_folder(directory)
