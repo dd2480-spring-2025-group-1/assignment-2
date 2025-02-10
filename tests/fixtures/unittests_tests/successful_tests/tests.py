@@ -1,5 +1,6 @@
 import unittest
 
+# All these tests succeed
 class TestTests(unittest.TestCase):
     def test_this_should_be_true(self):
         self.assertTrue(True)
