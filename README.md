@@ -19,7 +19,7 @@ As a developer, you should first run the following:
 python3.11 -m venv .venv
 source .venv/bin/activate
 # install required packages, and setup pre-commit hooks
-pip install -r requirements-dev.txt 
+pip install -r requirements-dev.txt
 pre-commit install
 ```
 
@@ -28,20 +28,30 @@ Optionally, you can find the VS code extensions for Black formatter and Flake8 l
 Despite the ability to run the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
 ```bash
 # start development (with hot reload)
-docker compose --profile dev up --watch --build
+make docker_dev
 # production environment (automatic rebuild upon file changes)
-docker compose --profile prod up --watch --build
+make docker
 # production environment (requires manual rebuilding)
-docker compose --profile prod up --build
+make docker_man
 ```
 ```bash
 # alternatively, start development locally
-uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
+make uvicorn
 # you can only run unit tests locally
-python -m unittest
+make test
 ```
 
 Either way, after serving the application, you should now see the API docs available at http://localhost:8081.
+
+For deployment on the KTH server it is recommended to use tmux in order to use multiple terminals in one session and detaching them. You will have to both start the server and forward the port from the CI server.
+
+For forwarding the CI server port you will need the to set up ngrok as explained [here](https://ngrok.com/docs/guides/device-gateway/linux/) and add the token from our group. After that you can execute the following command:
+```bash
+make ngrok
+```
+
+Note: In case you are unsure about the available commands you can run `make help` for a help message with all the available commands
+
 
 ## Project specifications
 
