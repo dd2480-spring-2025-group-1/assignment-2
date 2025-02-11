@@ -1,18 +1,40 @@
-from src.modules.types import JobMetadata
+import json
+import os
+from src.modules.types import JobMetadata, Status
+from src.modules.utils import (
+    check_if_folder_exists,
+    check_if_file_exists,
+    create_folder,
+)
 
 
-def get_job_logs() -> list[str]:
+def get_job_logs(
+    directory: str = "./logs",
+) -> list[str]:
     """
     Returns a list of job log IDs that are available.
     """
-    # TODO: Implement this function and clean up the mock data
-    return [
-        "bd042fa6-4924-4c4e-b773-8783e3e58174",
-        "fd5c084c-ff7c-4651-9a52-37096242d81c",
-    ]
+    file_name = "log_list.json"
+
+    log_list_file = os.path.join(directory, file_name)
+
+    if not check_if_folder_exists(directory):
+        create_folder(directory)
+
+    if not check_if_file_exists(log_list_file):
+        with open(log_list_file, "w") as f:
+            json.dump([], f, indent=4)
+
+    with open(log_list_file, "r") as openfile:
+        file_content = openfile.read().strip()
+        logs = json.loads(file_content) if file_content else []
+
+    log_ids = [log["id"] for log in logs]
+
+    return log_ids
 
 
-def write_job_log(id: str, metadata: JobMetadata) -> None:
+def write_job_log(id: str, metadata: JobMetadata, directory: str = "./logs") -> None:
     """
     Given a job log ID and metadata, serialize and store the metadata.
     """
@@ -20,7 +42,7 @@ def write_job_log(id: str, metadata: JobMetadata) -> None:
     pass
 
 
-def read_job_log(id: str) -> JobMetadata:
+def read_job_log(id: str, directory: str = "./logs") -> JobMetadata:
     """
     Given a job log ID, read and deserialize the metadata.
 
