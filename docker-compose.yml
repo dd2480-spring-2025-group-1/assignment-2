@@ -1,4 +1,3 @@
-
 services:
   api:
     build: .
@@ -10,7 +9,7 @@ services:
           path: .
           target: /home/myuser/code
     command: uvicorn src.main:app --host 0.0.0.0 --port 8001
-    profiles: 
+    profiles:
       - prod
   api-dev:
     build: .
@@ -25,7 +24,7 @@ services:
           path: ./requirements.txt
           target: /home/myuser/code/requirements.txt
     command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
-    profiles: 
+    profiles:
       - dev
 
 networks:
