@@ -125,6 +125,31 @@ class TestUtils(unittest.TestCase):
             os.path.join(self.fixture_folder, "multiple_log"),
         )
 
+    def test_read_job_logs_and_write_job_logs_and_get_job_logs(self):
+        """
+        Test writing logs and reading what was written and log listing.
+        """
+        mock1 = self.mock_metadata(
+            "as54", logs=["Mocked log 54", "Mocked log 55", "Mocked log 56"]
+        )
+        mock2 = self.mock_metadata(
+            "bd34", logs=["Mocked log 34", "Mocked log 35", "Mocked log 36"]
+        )
+        write_job_log("as54", mock1, self.ephemeral_folder)
+        write_job_log("bd34", mock2, self.ephemeral_folder)
+
+        result1 = read_job_log("as54", self.ephemeral_folder)
+        result2 = read_job_log("bd34", self.ephemeral_folder)
+
+        logResult = get_job_logs(self.ephemeral_folder)
+
+        self.assertEqual(mock1, result1)
+        self.assertEqual(mock2, result2)
+
+        self.assertIn("as54", logResult)
+        self.assertIn("bd34", logResult)
+        self.assertEqual(len(logResult), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
