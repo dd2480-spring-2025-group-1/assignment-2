@@ -9,18 +9,18 @@ from src.modules.types import JobMetadata
 class TestUtils(unittest.TestCase):
     # Set up the test environment
     def setUp(self):
-        self.fixture_folder = "tests/fixtures/log_tests/get_job_logs"
+        self.fixture_folder = "tests/fixtures/log_tests"
 
     # Tests for get_job_logs
     def test_get_job_logs(self):
-        result = get_job_logs(self.fixture_folder, "multiple_log.json")
+        result = get_job_logs(os.path.join(self.fixture_folder, "multiple_log"))
 
         self.assertIn("ad21", result)
         self.assertIn("df44", result)
         self.assertEqual(len(result), 2)
 
     def test_get_job_log(self):
-        result = get_job_logs(self.fixture_folder, "single_log.json")
+        result = get_job_logs(os.path.join(self.fixture_folder, "single_log"))
 
         self.assertIn("ad21", result)
         self.assertEqual(len(result), 1)

@@ -9,22 +9,23 @@ from src.modules.utils import (
 
 
 def get_job_logs(
-    directory: str = "./logs", file_name: str = "log_list.json"
+    directory: str = "./logs",
 ) -> list[str]:
     """
     Returns a list of job log IDs that are available.
     """
+    file_name = "log_list.json"
 
-    LOG_LIST_FILE = os.path.join(directory, file_name)
+    log_list_file = os.path.join(directory, file_name)
 
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
-    if not check_if_file_exists(LOG_LIST_FILE):
-        with open(LOG_LIST_FILE, "w") as f:
+    if not check_if_file_exists(log_list_file):
+        with open(log_list_file, "w") as f:
             json.dump([], f, indent=4)
 
-    with open(LOG_LIST_FILE, "r") as openfile:
+    with open(log_list_file, "r") as openfile:
         file_content = openfile.read().strip()
         logs = json.loads(file_content) if file_content else []
 
