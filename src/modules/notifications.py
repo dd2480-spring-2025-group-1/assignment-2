@@ -1,4 +1,6 @@
 from src.modules.types import Status
+from fastapi import HTTPException, requests
+import os
 
 
 def add_commit_status(
@@ -17,12 +19,27 @@ def add_commit_status(
     :param state: The state of the status. Can be one of `success`, `failure`, `pending`, or `error`.
     :param id: The unique ID of the job.
     """
-    # TODO: Check how exactly this works... If we already sent a pending job status, how do we update it later?
-    # Does github automatically update the status check if we send a new one with the same context?
+    url = f"https://api.github.com/repos/{owner}/{repo}/statuses/{sha}"
 
-    # TODO: Implement this function - For the API call, we should default the target_url to the `/logs/{job_id}` endpoint, and the context to `custom-ci/lint-and-test`.
-    # For the description, I guess we can just write some elaborations based off the status enums, then refer the user to the target_url for details?
-    pass
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    if not GITHUB_TOKEN:
+        raise ValueError("GITHUB_TOKEN is not set.")
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    payload = {
+        "state": state.value,
+        "description": f"Custom CI/CD job {id} is {state.value}.",
+        "context": "custom-ci/lint-and-test",
+    }
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 201:
+        raise HTTPException(
+            status_code=response.status_code, detail="Failed to update commit status."
+        )
 
 
 def get_commit_status(owner: str, repo: str, ref: str) -> Status:
