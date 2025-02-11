@@ -9,7 +9,7 @@ from src.modules.types import JobMetadata
 class TestUtils(unittest.TestCase):
     # Set up the test environment
     def setUp(self):
-        self.fixture_folder = "tests/fixtures/log_tests/get_job_logs"
+        self.fixture_folder = "tests/fixtures/log_tests"
         self.ephemeral_folder = "./temp/log_test/"
 
     def tearDown(self):
@@ -35,7 +35,7 @@ class TestUtils(unittest.TestCase):
         """
         Test getting multiple log ids and verifying what is returned.
         """
-        result = get_job_logs(self.fixture_folder, "multiple_log.json")
+        result = get_job_logs(os.path.join(self.fixture_folder, "multiple_log"))
 
         self.assertIn("ad21", result)
         self.assertIn("df44", result)
@@ -45,7 +45,7 @@ class TestUtils(unittest.TestCase):
         """
         Test getting a single log id and verifying what has been returned.
         """
-        result = get_job_logs(self.fixture_folder, "single_log.json")
+        result = get_job_logs(os.path.join(self.fixture_folder, "single_log"))
 
         self.assertIn("ad21", result)
         self.assertEqual(len(result), 1)
@@ -58,12 +58,10 @@ class TestUtils(unittest.TestCase):
         mock1 = self.mock_metadata("ad21")
         mock2 = self.mock_metadata("df44")
 
-        file_name = "log_list.json"
-
         write_job_log("ad21", mock1, self.ephemeral_folder)
         write_job_log("df44", mock2, self.ephemeral_folder)
 
-        ids = get_job_logs(self.ephemeral_folder, file_name)
+        ids = get_job_logs(self.ephemeral_folder)
         self.assertIn("ad21", ids)
         self.assertIn("df44", ids)
         self.assertEqual(len(ids), 2, "Expected exactly 2 IDs in the log file.")
@@ -73,11 +71,10 @@ class TestUtils(unittest.TestCase):
         Test writing a single log and verifying its contents via read_job_log().
         """
         mock = self.mock_metadata("ad21")
-        file_name = "log_list.json"
 
         write_job_log("ad21", mock, self.ephemeral_folder)
 
-        ids = get_job_logs(self.ephemeral_folder, file_name)
+        ids = get_job_logs(self.ephemeral_folder)
         self.assertIn("ad21", ids)
         self.assertEqual(len(ids), 1, "Expected 1 ID in the log file.")
 
