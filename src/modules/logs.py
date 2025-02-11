@@ -37,28 +37,28 @@ def write_job_log(
     id: str,
     metadata: JobMetadata,
     directory: str = "./logs",
-    file_name: str = "log_list.json",
 ) -> None:
     """
     Given a job log ID and metadata, serialize and store the metadata.
     """
-    LOG_LIST_FILE = os.path.join(directory, file_name)
+    file_name = "log_list.json"
+
+    log_list_file = os.path.join(directory, file_name)
 
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
-    if not check_if_file_exists(LOG_LIST_FILE):
+    if not check_if_file_exists(log_list_file):
         logs = []
     else:
-        with open(LOG_LIST_FILE, "r") as openfile:
+        with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
             logs = json.loads(file_content) if file_content else []
 
     logs.append(metadata.model_dump(mode="json"))
 
-    with open(LOG_LIST_FILE, "w") as outfile:
+    with open(log_list_file, "w") as outfile:
         json.dump(logs, outfile, indent=4)
-
     pass
 
 

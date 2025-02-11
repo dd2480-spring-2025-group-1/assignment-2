@@ -58,10 +58,10 @@ class TestUtils(unittest.TestCase):
         mock1 = self.mock_metadata("ad21")
         mock2 = self.mock_metadata("df44")
 
-        file_name = "multiple_test.json"
+        file_name = "log_list.json"
 
-        write_job_log("ad21", mock1, self.ephemeral_folder, file_name)
-        write_job_log("df44", mock2, self.ephemeral_folder, file_name)
+        write_job_log("ad21", mock1, self.ephemeral_folder)
+        write_job_log("df44", mock2, self.ephemeral_folder)
 
         ids = get_job_logs(self.ephemeral_folder, file_name)
         self.assertIn("ad21", ids)
@@ -73,9 +73,9 @@ class TestUtils(unittest.TestCase):
         Test writing a single log and verifying its contents via read_job_log().
         """
         mock = self.mock_metadata("ad21")
-        file_name = "single_test.json"
+        file_name = "log_list.json"
 
-        write_job_log("ad21", mock, self.ephemeral_folder, file_name)
+        write_job_log("ad21", mock, self.ephemeral_folder)
 
         ids = get_job_logs(self.ephemeral_folder, file_name)
         self.assertIn("ad21", ids)
