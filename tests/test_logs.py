@@ -28,8 +28,8 @@ class TestUtils(unittest.TestCase):
         ref: Optional[str] = "main",
         head_commit: Optional[str] = "b7f1a1c",
         author: Optional[str] = "Joel90689",
-        time_started: Optional[int] = 21,
-        time_ended: Optional[int] = 23,
+        time_started: Optional[int] = 1739276000,
+        time_ended: Optional[int] = 1739276020,
         logs: Optional[List[str]] = [
             "Mocked log 1",
             "Mocked log 2",
