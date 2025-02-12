@@ -22,6 +22,7 @@ def get_job_logs(
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
+    # reads the log list file
     if check_if_file_exists(log_list_file):
         with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
@@ -51,9 +52,11 @@ def write_job_log(
         # Job log has already been written
         return
 
+    # writes the metadata to a file
     with open(log_file, "w") as outfile:
         json.dump(metadata.model_dump(mode="json"), outfile, indent=4)
 
+    # updates the log list
     if check_if_file_exists(log_list_file):
         with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
@@ -80,6 +83,7 @@ def read_job_log(id: str, directory: str = "./logs") -> JobMetadata:
     if not check_if_file_exists(log_file):
         raise ValueError(f"Log ID {id} not found.")
 
+    # Read the log file
     with open(log_file, "r") as openfile:
         file_content = openfile.read().strip()
         log_data = json.loads(file_content) if file_content else {}
