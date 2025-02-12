@@ -2,6 +2,10 @@ from src.modules.types import Status
 from fastapi import HTTPException
 import requests
 import os
+from dotenv import load_dotenv
+
+# normally this is loaded in main.py, but we need it here for the tests
+load_dotenv()
 
 
 def add_commit_status(
@@ -32,15 +36,18 @@ def add_commit_status(
     }
     payload = {
         "state": state.value,
-        "description": f"Custom CI/CD job {id} is {state.value}. URL for CI job log for more details: https://secretly-native-ant.ngrok-free.app/logs/{id}",
+        "description": "Custom CI/CD job was ran. Job details and logs can be viewed in the URL.",
         "context": "custom-ci/lint-and-test",
+        "target_url": f"https://secretly-native-ant.ngrok-free.app/logs/{id}",
     }
     response = requests.post(url, headers=headers, json=payload)
 
     if response.status_code != 201:
-        raise HTTPException(
+        err = HTTPException(
             status_code=response.status_code, detail="Failed to update commit status."
         )
+        err.add_note(response.json())
+        raise err
 
 
 def get_commit_status(owner: str, repo: str, ref: str) -> Status:
@@ -66,9 +73,11 @@ def get_commit_status(owner: str, repo: str, ref: str) -> Status:
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        raise HTTPException(
+        err = HTTPException(
             status_code=response.status_code, detail="Failed to get commit status."
         )
+        err.add_note(response.json())
+        raise err
 
     status = response.json()["state"]
 
