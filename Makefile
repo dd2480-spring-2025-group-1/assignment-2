@@ -1,6 +1,10 @@
-# Run CI server with uvicorn
+# Run CI server with uvicorn (with hot reload)
 uvicorn:
 	uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
+
+# Run CI server with uvicorn
+uvicorn_prod:
+	uvicorn src.main:app --host 0.0.0.0 --port 8001
 
 # Run unittests
 test:
