@@ -7,14 +7,15 @@ from src.modules.utils import (
     create_folder,
 )
 
+file_name = "log_list.json"
+
 
 def get_job_logs(
     directory: str = "./logs",
 ) -> list[str]:
     """
-    Returns a list of job log IDs that are available.
+    Returns a list of job log IDs that are available. Creates a directory for logs if one doesn't already exist.
     """
-    file_name = "log_list.json"
 
     log_list_file = os.path.join(directory, file_name)
 
@@ -34,11 +35,31 @@ def get_job_logs(
     return log_ids
 
 
-def write_job_log(id: str, metadata: JobMetadata, directory: str = "./logs") -> None:
+def write_job_log(
+    id: str,
+    metadata: JobMetadata,
+    directory: str = "./logs",
+) -> None:
     """
-    Given a job log ID and metadata, serialize and store the metadata.
+    Given a job log ID and metadata, serialize and store the metadata. Creates a directory for logs if one doesn't already exist.
     """
-    # TODO: Implement this function and clean up the mock data
+
+    log_list_file = os.path.join(directory, file_name)
+
+    if not check_if_folder_exists(directory):
+        create_folder(directory)
+
+    if not check_if_file_exists(log_list_file):
+        logs = []
+    else:
+        with open(log_list_file, "r") as openfile:
+            file_content = openfile.read().strip()
+            logs = json.loads(file_content) if file_content else []
+
+    logs.append(metadata.model_dump(mode="json"))
+
+    with open(log_list_file, "w") as outfile:
+        json.dump(logs, outfile, indent=4)
     pass
 
 
