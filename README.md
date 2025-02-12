@@ -63,6 +63,10 @@ Note: In case you are unsure about the available commands you can run `make help
 
 ### Testing
 
+Testing was implemented with the _unittest_ python library. Each function has its respective unittests in the _tests_ folder in order to test the functionality in a minimal way. The CI main function pipeline executes the `run_tests` function which in turn runs the shell command that initializes the tests inside a target folder and stores the output given after execution.
+
+Unit testing is performed by running the `run_tests` function inside of fixture folders in the tests folder. These fixtures contain very simple tests that should fail or tests that pass.
+
 ### Notification
 
 ### Links
