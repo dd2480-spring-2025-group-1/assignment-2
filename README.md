@@ -47,7 +47,7 @@ make uvicorn
 make test
 ```
 
-Either way, after serving the application, you should now see the API docs available at http://localhost:8081/redoc (recommended) or http://localhost:8081/docs.
+Either way, after serving the application, you should now see the API docs available at http://localhost:8001/redoc (recommended) or http://localhost:8001/docs.
 
 For deployment on the KTH server it is recommended to use tmux in order to use multiple terminals in one session and detaching them. You will have to both start the server and forward the port from the CI server.
 
