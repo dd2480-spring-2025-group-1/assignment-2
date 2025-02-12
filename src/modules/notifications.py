@@ -32,8 +32,9 @@ def add_commit_status(
     }
     payload = {
         "state": state.value,
-        "description": f"Custom CI/CD job {id} is {state.value}. URL for CI job log for more details: https://secretly-native-ant.ngrok-free.app/logs/{id}",
+        "description": "Custom CI/CD job was ran. Job details and logs can be viewed in the URL.",
         "context": "custom-ci/lint-and-test",
+        "target_url": f"https://secretly-native-ant.ngrok-free.app/logs/{id}",
     }
     response = requests.post(url, headers=headers, json=payload)
 
