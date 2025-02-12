@@ -23,7 +23,9 @@ from src.modules.types import (
     WebhookResponse,
 )
 from src.modules.utils import create_folder, remove_folder
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = FastAPI(
     title="CI/CD Service API for DD2480",

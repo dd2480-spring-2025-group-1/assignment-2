@@ -1,4 +1,7 @@
 from src.modules.types import Status
+from fastapi import HTTPException
+import requests
+import os
 
 
 def add_commit_status(
@@ -17,23 +20,56 @@ def add_commit_status(
     :param state: The state of the status. Can be one of `success`, `failure`, `pending`, or `error`.
     :param id: The unique ID of the job.
     """
-    # TODO: Check how exactly this works... If we already sent a pending job status, how do we update it later?
-    # Does github automatically update the status check if we send a new one with the same context?
+    url = f"https://api.github.com/repos/{owner}/{repo}/statuses/{sha}"
 
-    # TODO: Implement this function - For the API call, we should default the target_url to the `/logs/{job_id}` endpoint, and the context to `custom-ci/lint-and-test`.
-    # For the description, I guess we can just write some elaborations based off the status enums, then refer the user to the target_url for details?
-    pass
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    if not GITHUB_TOKEN:
+        raise ValueError("GITHUB_TOKEN is not set.")
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    payload = {
+        "state": state.value,
+        "description": f"Custom CI/CD job {id} is {state.value}. URL for CI job log for more details: https://secretly-native-ant.ngrok-free.app/logs/{id}",
+        "context": "custom-ci/lint-and-test",
+    }
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 201:
+        raise HTTPException(
+            status_code=response.status_code, detail="Failed to update commit status."
+        )
 
 
 def get_commit_status(owner: str, repo: str, ref: str) -> Status:
     """
-    Get the combined status check for a given repository and commit reference.
-
-    Note that only the latest 30 status checks are taken into account.
+    Get the latest commit status for a given repository and commit reference.
 
     :param owner: The account owner of the repository. The name is not case sensitive.
     :param repo: The name of the repository without the `.git` extension. The name is not case sensitive.
     :param ref: The commit reference. Can be a commit SHA, branch name (`heads/BRANCH_NAME`), or tag name (`tags/TAG_NAME`). For more information, see "Git References" in the Git documentation.
     """
-    # TODO: Implement this function.
-    pass
+
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}/status"
+
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    if not GITHUB_TOKEN:
+        raise ValueError("GITHUB_TOKEN is not set.")
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code, detail="Failed to get commit status."
+        )
+
+    status = response.json()["state"]
+
+    return status
