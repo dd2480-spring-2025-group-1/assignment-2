@@ -11,7 +11,7 @@ class TestUtils(unittest.TestCase):
     # Set up the test environment
     def setUp(self):
         self.fixture_folder = "tests/fixtures/log_tests"
-        self.ephemeral_folder = "./temp/log_test/"
+        self.ephemeral_folder = "temp/log_test/"
 
     def tearDown(self):
         if check_if_folder_exists(self.ephemeral_folder):
@@ -55,9 +55,7 @@ class TestUtils(unittest.TestCase):
         """
         result = get_job_logs(os.path.join(self.fixture_folder, "multiple_log"))
 
-        self.assertIn("ad21", result)
-        self.assertIn("df44", result)
-        self.assertEqual(len(result), 2)
+        self.assertListEqual(result, ["ad21", "df44"])
 
     def test_get_job_log(self):
         """
@@ -65,8 +63,7 @@ class TestUtils(unittest.TestCase):
         """
         result = get_job_logs(os.path.join(self.fixture_folder, "single_log"))
 
-        self.assertIn("ad21", result)
-        self.assertEqual(len(result), 1)
+        self.assertListEqual(result, ["ad21"])
 
     def test_write_job_logs(self):
         """
@@ -79,9 +76,7 @@ class TestUtils(unittest.TestCase):
         write_job_log("df44", mock2, self.ephemeral_folder)
 
         ids = get_job_logs(self.ephemeral_folder)
-        self.assertIn("ad21", ids)
-        self.assertIn("df44", ids)
-        self.assertEqual(len(ids), 2, "Expected exactly 2 IDs in the log file.")
+        self.assertListEqual(ids, ["ad21", "df44"])
 
     def test_write_job_log(self):
         """
@@ -92,8 +87,7 @@ class TestUtils(unittest.TestCase):
         write_job_log("ad21", mock, self.ephemeral_folder)
 
         ids = get_job_logs(self.ephemeral_folder)
-        self.assertIn("ad21", ids)
-        self.assertEqual(len(ids), 1, "Expected 1 ID in the log file.")
+        self.assertListEqual(ids, ["ad21"])
 
     def test_read_job_log_and_write_job_log(self):
         """

@@ -4,6 +4,7 @@ from src.modules.actions import (
     clone_repo,
     setup_dependencies,
     run_linter_check,
+    run_tests,
 )
 from src.modules.utils import (
     check_if_file_exists,
@@ -100,6 +101,17 @@ class ActionsTest(unittest.TestCase):
         check, logs = run_linter_check("tests/fixtures/flake8_tests/trigger_F82")
         self.assertFalse(check)
         self.assertTrue("F82" in logs)
+
+    # Tests for run_tests
+    def test_run_sucessful_tests(self):
+        check, logs = run_tests("tests/fixtures/unittests_tests/successful_tests")
+        self.assertTrue(check)
+        self.assertTrue("OK" in logs)
+
+    def test_run_failing_tests(self):
+        check, logs = run_tests("tests/fixtures/unittests_tests/failing_tests")
+        self.assertFalse(check)
+        self.assertTrue("FAILED" in logs)
 
 
 if __name__ == "__main__":
