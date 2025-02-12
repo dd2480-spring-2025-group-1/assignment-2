@@ -112,7 +112,14 @@ def run_tests(target_folder: str) -> tuple[bool, str]:
     if not check_if_folder_exists(target_folder):
         raise ValueError(f"The provided path {target_folder} is not a valid directory.")
 
-    test_command = ". .venv/bin/activate && python -m unittest"
+    # .venv might not exist if the setup_dependencies function was not called
+    test_command = """
+    if test -d .venv; then
+        . .venv/bin/activate
+    fi
+    python -m unittest
+    """
+
     result = subprocess.run(
         test_command, capture_output=True, shell=True, cwd=target_folder
     )
