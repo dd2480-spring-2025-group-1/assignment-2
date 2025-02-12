@@ -65,7 +65,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. 
 
 ### Johan Nilsson
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I worked on property 7 which was that the CI server keeps the history of the past builds and that it persists. I made each build accessible through its' own url with a main url which lists all builds. My work is located in src/modules/logs.py and tests are in tests/test_logs.py .I also reviewed some PRs.
 
 ### Marcello Krahforst
 
