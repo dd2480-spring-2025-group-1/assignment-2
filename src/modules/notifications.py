@@ -2,6 +2,10 @@ from src.modules.types import Status
 from fastapi import HTTPException
 import requests
 import os
+from dotenv import load_dotenv
+
+# normally this is loaded in main.py, but we need it here for the tests
+load_dotenv()
 
 
 def add_commit_status(
