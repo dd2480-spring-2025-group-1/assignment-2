@@ -43,9 +43,11 @@ def add_commit_status(
     response = requests.post(url, headers=headers, json=payload)
 
     if response.status_code != 201:
-        raise HTTPException(
+        err = HTTPException(
             status_code=response.status_code, detail="Failed to update commit status."
         )
+        err.add_note(response.json())
+        raise err
 
 
 def get_commit_status(owner: str, repo: str, ref: str) -> Status:
@@ -71,9 +73,11 @@ def get_commit_status(owner: str, repo: str, ref: str) -> Status:
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        raise HTTPException(
+        err = HTTPException(
             status_code=response.status_code, detail="Failed to get commit status."
         )
+        err.add_note(response.json())
+        raise err
 
     status = response.json()["state"]
 
