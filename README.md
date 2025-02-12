@@ -61,7 +61,14 @@ Note: In case you are unsure about the available commands you can run `make help
 
 ### Kam Ting Hoi
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I mainly worked on `clone_repo` and `setup_dependencies`, which were fundamental for the CI actions service (#10).
+
+Besides, I facilitated our group's development velocity by:
+- initializing the repository with basic file structures and function skeletons (#12, #14, #17).
+- containerising the application using docker for easier setup and deployment (#6).
+- adding basic utility functions for file operations (#9).
+
+Finally, I was responsible for various bug fixes and integrating the application (#54, #57).
 
 ### Johan Nilsson
 
