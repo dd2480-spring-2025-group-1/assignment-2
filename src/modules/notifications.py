@@ -1,5 +1,6 @@
 from src.modules.types import Status
-from fastapi import HTTPException, requests
+from fastapi import HTTPException
+import requests
 import os
 
 
