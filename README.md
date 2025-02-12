@@ -41,7 +41,7 @@ make uvicorn
 make test
 ```
 
-Either way, after serving the application, you should now see the API docs available at http://localhost:8081.
+Either way, after serving the application, you should now see the API docs available at http://localhost:8001.
 
 For deployment on the KTH server it is recommended to use tmux in order to use multiple terminals in one session and detaching them. You will have to both start the server and forward the port from the CI server.
 
@@ -64,6 +64,10 @@ Note: In case you are unsure about the available commands you can run `make help
 ### Testing
 
 ### Notification
+
+Notifications uses two functions to operate: 'add_commit_status' and 'get_commit_status'. They both utilize REST API, requests and fastapi to communicate with Github. They update and read commit statuses respectively. When a commit is pushed a webhook activest the API endpoints in main that later goes through testing. The status gets updated accordingly. It is important to have a Github personal access token in environmental variables that authenticates the user.
+
+Unit testing is performed on a mockup that validates that a Github token exists and catches a bad request. Then 'add_commit_status' tries to change the status of a dummy commit and 'get_commit_status' reads it to see if it was successful.
 
 ### Links
 
