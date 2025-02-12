@@ -32,7 +32,7 @@ def add_commit_status(
     }
     payload = {
         "state": state.value,
-        "description": f"Custom CI/CD job {id} is {state.value}.",
+        "description": f"Custom CI/CD job {id} is {state.value}. URL for CI job log for more details: https://secretly-native-ant.ngrok-free.app/logs/{id}",
         "context": "custom-ci/lint-and-test",
     }
     response = requests.post(url, headers=headers, json=payload)
@@ -70,4 +70,6 @@ def get_commit_status(owner: str, repo: str, ref: str) -> Status:
             status_code=response.status_code, detail="Failed to get commit status."
         )
 
-    return response.json()
+    status = response.json()["state"]
+
+    return status
