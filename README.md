@@ -66,6 +66,9 @@ Note: In case you are unsure about the available commands you can run `make help
 ### Notification
 
 ### Links
+Use this link to access a list of all build logs: https://secretly-native-ant.ngrok-free.app/logs
+
+Then, access the build log you want to read by inserting the ID of it in the url: https://secretly-native-ant.ngrok-free.app/logs/{id}
 
 
 ## Statement of contributions
