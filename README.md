@@ -57,6 +57,17 @@ Note: In case you are unsure about the available commands you can run `make help
 
 ⚠️ Note that HTTPS is currently not supported.
 
+## How it works
+
+### Static Syntax Check
+
+### Testing
+
+### Notification
+
+### Links
+
+
 ## Statement of contributions
 
 ### Kam Ting Hoi
