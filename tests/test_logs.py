@@ -147,5 +147,6 @@ class TestUtils(unittest.TestCase):
         self.assertIn("bd34", logResult)
         self.assertEqual(len(logResult), 2)
 
+
 if __name__ == "__main__":
     unittest.main()
