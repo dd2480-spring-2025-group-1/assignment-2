@@ -45,13 +45,29 @@ def add_commit_status(
 
 def get_commit_status(owner: str, repo: str, ref: str) -> Status:
     """
-    Get the combined status check for a given repository and commit reference.
-
-    Note that only the latest 30 status checks are taken into account.
+    Get the latest commit status for a given repository and commit reference.
 
     :param owner: The account owner of the repository. The name is not case sensitive.
     :param repo: The name of the repository without the `.git` extension. The name is not case sensitive.
     :param ref: The commit reference. Can be a commit SHA, branch name (`heads/BRANCH_NAME`), or tag name (`tags/TAG_NAME`). For more information, see "Git References" in the Git documentation.
     """
-    # TODO: Implement this function.
-    pass
+
+    url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}/status"
+
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    if not GITHUB_TOKEN:
+        raise ValueError("GITHUB_TOKEN is not set.")
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code, detail="Failed to get commit status."
+        )
+
+    return response.json()
