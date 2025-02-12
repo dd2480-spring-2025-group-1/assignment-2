@@ -22,13 +22,12 @@ def get_job_logs(
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
-    if not check_if_file_exists(log_list_file):
-        with open(log_list_file, "w") as f:
-            json.dump([], f, indent=4)
-
-    with open(log_list_file, "r") as openfile:
-        file_content = openfile.read().strip()
-        logs = json.loads(file_content) if file_content else []
+    if check_if_file_exists(log_list_file):
+        with open(log_list_file, "r") as openfile:
+            file_content = openfile.read().strip()
+            logs = json.loads(file_content) if file_content else []
+    else:
+        logs = []
 
     log_ids = [log["id"] for log in logs]
 
@@ -49,12 +48,12 @@ def write_job_log(
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
-    if not check_if_file_exists(log_list_file):
-        logs = []
-    else:
+    if check_if_file_exists(log_list_file):
         with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
             logs = json.loads(file_content) if file_content else []
+    else:
+        logs = []
 
     logs.append(metadata.model_dump(mode="json"))
 
@@ -71,20 +70,18 @@ def read_job_log(id: str, directory: str = "./logs") -> JobMetadata:
 
     Raises an exception if the log ID is not found.
     """
-    file_name = "log_list.json"
 
     log_list_file = os.path.join(directory, file_name)
 
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
-    if not check_if_file_exists(log_list_file):
-        with open(log_list_file, "w") as f:
-            json.dump([], f, indent=4)
-
-    with open(log_list_file, "r") as openfile:
-        file_content = openfile.read().strip()
-        logs = json.loads(file_content) if file_content else []
+    if check_if_file_exists(log_list_file):
+        with open(log_list_file, "r") as openfile:
+            file_content = openfile.read().strip()
+            logs = json.loads(file_content) if file_content else []
+    else:
+        logs = []
 
     for log in logs:
         if log["id"] == id:
