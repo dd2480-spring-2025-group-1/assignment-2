@@ -1,3 +1,5 @@
 uvicorn[standard]
 fastapi
 flake8
+requests
+python-dotenv
