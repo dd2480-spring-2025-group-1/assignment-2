@@ -4,4 +4,4 @@ flake8
 black
 pre-commit
 requests
-dotenv
+python-dotenv
