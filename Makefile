@@ -1,6 +1,10 @@
+# Run CI server with uvicorn (with hot reload)
+uvicorn_dev:
+	uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
+
 # Run CI server with uvicorn
 uvicorn:
-	uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload-exclude ./temp/** --reload
+	uvicorn src.main:app --host 0.0.0.0 --port 8001
 
 # Run unittests
 test:
@@ -27,6 +31,7 @@ help:
 	@echo "Makefile Help:"
 	@echo ""
 	@echo "Available targets:"
+	@echo "  uvicorn_dev    - Run CI server with uvicorn with hot reload (hosted at 0.0.0.0:8001)"
 	@echo "  uvicorn        - Run CI server with uvicorn (hosted at 0.0.0.0:8001)"
 	@echo "  test           - Run unit tests with unittest"
 	@echo "  docker_dev     - Start Docker development environment with hot reload"
