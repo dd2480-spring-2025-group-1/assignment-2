@@ -7,14 +7,15 @@ from src.modules.utils import (
     create_folder,
 )
 
+file_name = "log_list.json"
+
 
 def get_job_logs(
     directory: str = "./logs",
 ) -> list[str]:
     """
-    Returns a list of job log IDs that are available.
+    Returns a list of job log IDs that are available. Creates a directory for logs if one doesn't already exist.
     """
-    file_name = "log_list.json"
 
     log_list_file = os.path.join(directory, file_name)
 
@@ -40,9 +41,8 @@ def write_job_log(
     directory: str = "./logs",
 ) -> None:
     """
-    Given a job log ID and metadata, serialize and store the metadata.
+    Given a job log ID and metadata, serialize and store the metadata. Creates a directory for logs if one doesn't already exist.
     """
-    file_name = "log_list.json"
 
     log_list_file = os.path.join(directory, file_name)
 
