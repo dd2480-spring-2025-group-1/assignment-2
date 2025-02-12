@@ -22,7 +22,9 @@ def clone_repo(url: str, destination: str) -> str:
         err.add_note(ret.stderr.decode())
         raise err
 
-    return ret.stdout.decode()
+    # Git commands outputs information message on stderr
+    # see https://stackoverflow.com/questions/57016157/how-to-stop-git-from-writing-non-errors-to-stderr
+    return ret.stderr.decode()
 
 
 def checkout_ref(target_folder: str, ref: str) -> str:
@@ -44,7 +46,9 @@ def checkout_ref(target_folder: str, ref: str) -> str:
         err.add_note(ret.stderr.decode())
         raise err
 
-    return ret.stdout.decode()
+    # Git commands outputs information message on stderr
+    # see https://stackoverflow.com/questions/57016157/how-to-stop-git-from-writing-non-errors-to-stderr
+    return ret.stderr.decode()
 
 
 def setup_dependencies(target_folder: str) -> str:
