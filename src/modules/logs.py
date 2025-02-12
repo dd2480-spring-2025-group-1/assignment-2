@@ -22,14 +22,13 @@ def get_job_logs(
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
+    # reads the log list file
     if check_if_file_exists(log_list_file):
         with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
-            logs = json.loads(file_content) if file_content else []
+            log_ids = json.loads(file_content) if file_content else []
     else:
-        logs = []
-
-    log_ids = [log["id"] for log in logs]
+        log_ids = []
 
     return log_ids
 
@@ -43,23 +42,32 @@ def write_job_log(
     Given a job log ID and metadata, serialize and store the metadata. Creates a directory for logs if one doesn't already exist.
     """
 
+    log_file = os.path.join(directory, f"{id}.json")
     log_list_file = os.path.join(directory, file_name)
 
     if not check_if_folder_exists(directory):
         create_folder(directory)
 
+    if check_if_file_exists(log_file):
+        # Job log has already been written
+        return
+
+    # writes the metadata to a file
+    with open(log_file, "w") as outfile:
+        json.dump(metadata.model_dump(mode="json"), outfile, indent=4)
+
+    # updates the log list
     if check_if_file_exists(log_list_file):
         with open(log_list_file, "r") as openfile:
             file_content = openfile.read().strip()
-            logs = json.loads(file_content) if file_content else []
+            log_ids = json.loads(file_content) if file_content else []
     else:
-        logs = []
+        log_ids = []
 
-    logs.append(metadata.model_dump(mode="json"))
-
-    with open(log_list_file, "w") as outfile:
-        json.dump(logs, outfile, indent=4)
-    pass
+    if id not in log_ids:
+        log_ids.append(id)
+        with open(log_list_file, "w") as outfile:
+            json.dump(log_ids, outfile, indent=4)
 
 
 def read_job_log(id: str, directory: str = "./logs") -> JobMetadata:
@@ -70,30 +78,14 @@ def read_job_log(id: str, directory: str = "./logs") -> JobMetadata:
 
     Raises an exception if the log ID is not found.
     """
+    log_file = os.path.join(directory, f"{id}.json")
 
-    log_list_file = os.path.join(directory, file_name)
+    if not check_if_file_exists(log_file):
+        raise ValueError(f"Log ID {id} not found.")
 
-    if not check_if_folder_exists(directory):
-        create_folder(directory)
+    # Read the log file
+    with open(log_file, "r") as openfile:
+        file_content = openfile.read().strip()
+        log_data = json.loads(file_content) if file_content else {}
 
-    if check_if_file_exists(log_list_file):
-        with open(log_list_file, "r") as openfile:
-            file_content = openfile.read().strip()
-            logs = json.loads(file_content) if file_content else []
-    else:
-        logs = []
-
-    for log in logs:
-        if log["id"] == id:
-            return JobMetadata(
-                id=log["id"],
-                status=log["status"],
-                repo_url=log["repo_url"],
-                ref=log["ref"],
-                head_commit=log["head_commit"],
-                author=log["author"],
-                time_started=log["time_started"],
-                time_ended=log["time_ended"],
-                logs=log["logs"],
-            )
-    raise Exception(f"Log ID {id} not found.")
+    return JobMetadata(**log_data)
