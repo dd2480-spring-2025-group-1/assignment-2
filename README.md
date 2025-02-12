@@ -13,7 +13,13 @@ The prerequisites:
 - Git
 - Docker
 
-As a developer, you should first run the following:
+Firstly, you need to obtain a github token ([user access token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app), [installation access token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app), or [fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) should all work) to setup the credentials:
+```bash
+cp .env.sample .env
+nano .env # update your github token
+```
+
+As a developer, you should first run the following to install relevant dependencies:
 ```bash
 # activate venv to avoid package conflicts
 python3.11 -m venv .venv
@@ -25,7 +31,7 @@ pre-commit install
 
 Optionally, you can find the VS code extensions for Black formatter and Flake8 linter [here](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) and [there](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8).
 
-Despite the ability to run the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
+You should now be able to run the application! Despite the ability to serve the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
 ```bash
 # start development (with hot reload)
 make docker_dev
@@ -41,7 +47,7 @@ make uvicorn
 make test
 ```
 
-Either way, after serving the application, you should now see the API docs available at http://localhost:8081.
+Either way, after serving the application, you should now see the API docs available at http://localhost:8081/redoc (recommended) or http://localhost:8081/docs.
 
 For deployment on the KTH server it is recommended to use tmux in order to use multiple terminals in one session and detaching them. You will have to both start the server and forward the port from the CI server.
 
