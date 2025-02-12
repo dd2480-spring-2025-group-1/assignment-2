@@ -55,9 +55,7 @@ class TestUtils(unittest.TestCase):
         """
         result = get_job_logs(os.path.join(self.fixture_folder, "multiple_log"))
 
-        self.assertIn("ad21", result)
-        self.assertIn("df44", result)
-        self.assertEqual(len(result), 2)
+        self.assertListEqual(result, ["ad21", "df44"])
 
     def test_get_job_log(self):
         """
@@ -65,8 +63,7 @@ class TestUtils(unittest.TestCase):
         """
         result = get_job_logs(os.path.join(self.fixture_folder, "single_log"))
 
-        self.assertIn("ad21", result)
-        self.assertEqual(len(result), 1)
+        self.assertListEqual(result, ["ad21"])
 
     def test_write_job_logs(self):
         """

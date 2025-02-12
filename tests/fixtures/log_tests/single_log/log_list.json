@@ -1,18 +1,1 @@
-[
-    {
-        "id": "ad21",
-        "status": "success",
-        "repo_url": "https://github.com/dd2480-spring-2025-group-1/assignment-1",
-        "ref": "main",
-        "head_commit": "b7f1a1c",
-        "author": "Strengthless",
-        "time_started": 1739276000,
-        "time_ended": 1739276020,
-        "logs": [
-            "Mocked log 1",
-            "Mocked log 2",
-            "Mocked log 3",
-            "Mocked log 4"
-        ]
-    }
-]
+["ad21"]
