@@ -36,7 +36,7 @@ make docker_man
 ```
 ```bash
 # alternatively, start development locally
-make uvicorn
+make uvicorn_dev
 # you can only run unit tests locally
 make test
 ```
