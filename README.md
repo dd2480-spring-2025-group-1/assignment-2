@@ -99,7 +99,7 @@ I worked on property 7 which was that the CI server keeps the history of the pas
 
 ### Marcello Krahforst
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I mainly worked on the `syntax check` and `testing` functionality of the CI server. Besides that, I created the Makefile for a easier execution of important commands, set up the kth server as our CI server and wrote the Way of Working for this assignment.
 
 ### Arvid Hjort
 
