@@ -62,6 +62,10 @@ def ci_check(payload: PushEventPayload) -> None:
     if payload.created and payload.commits == []:
         return
 
+    # If a branch is deleted, do not run CI checks on the non-existent branch.
+    if payload.deleted:
+        return
+
     # Create a unique ID for the job
     uuid = str(uuid4())
     status = Status.PENDING
