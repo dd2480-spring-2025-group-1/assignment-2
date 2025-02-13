@@ -22,7 +22,9 @@ def clone_repo(url: str, destination: str) -> str:
         err.add_note(ret.stderr.decode())
         raise err
 
-    return ret.stdout.decode()
+    # Git commands outputs information message on stderr
+    # see https://stackoverflow.com/questions/57016157/how-to-stop-git-from-writing-non-errors-to-stderr
+    return ret.stderr.decode()
 
 
 def checkout_ref(target_folder: str, ref: str) -> str:
@@ -44,7 +46,9 @@ def checkout_ref(target_folder: str, ref: str) -> str:
         err.add_note(ret.stderr.decode())
         raise err
 
-    return ret.stdout.decode()
+    # Git commands outputs information message on stderr
+    # see https://stackoverflow.com/questions/57016157/how-to-stop-git-from-writing-non-errors-to-stderr
+    return ret.stderr.decode()
 
 
 def setup_dependencies(target_folder: str) -> str:
@@ -108,7 +112,14 @@ def run_tests(target_folder: str) -> tuple[bool, str]:
     if not check_if_folder_exists(target_folder):
         raise ValueError(f"The provided path {target_folder} is not a valid directory.")
 
-    test_command = "python -m unittest"
+    # .venv might not exist if the setup_dependencies function was not called
+    test_command = """
+    if test -d .venv; then
+        . .venv/bin/activate
+    fi
+    python -m unittest
+    """
+
     result = subprocess.run(
         test_command, capture_output=True, shell=True, cwd=target_folder
     )

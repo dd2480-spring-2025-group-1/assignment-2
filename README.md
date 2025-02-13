@@ -13,7 +13,13 @@ The prerequisites:
 - Git
 - Docker
 
-As a developer, you should first run the following:
+Firstly, you need to obtain a github token ([user access token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app), [installation access token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app), or [fine-grained personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) should all work) to setup the credentials:
+```bash
+cp .env.sample .env
+nano .env # update your github token
+```
+
+As a developer, you should first run the following to install relevant dependencies:
 ```bash
 # activate venv to avoid package conflicts
 python3.11 -m venv .venv
@@ -25,7 +31,7 @@ pre-commit install
 
 Optionally, you can find the VS code extensions for Black formatter and Flake8 linter [here](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter) and [there](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8).
 
-Despite the ability to run the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
+You should now be able to run the application! Despite the ability to serve the application locally, it is highly recommended to use [Docker](https://www.docker.com/) for active development or service deployment:
 ```bash
 # start development (with hot reload)
 make docker_dev
@@ -36,12 +42,12 @@ make docker_man
 ```
 ```bash
 # alternatively, start development locally
-make uvicorn
+make uvicorn_dev
 # you can only run unit tests locally
 make test
 ```
 
-Either way, after serving the application, you should now see the API docs available at http://localhost:8081.
+Either way, after serving the application, you should now see the API docs available at http://localhost:8001/redoc (recommended) or http://localhost:8001/docs.
 
 For deployment on the KTH server it is recommended to use tmux in order to use multiple terminals in one session and detaching them. You will have to both start the server and forward the port from the CI server.
 
@@ -64,23 +70,32 @@ Note: In case you are unsure about the available commands you can run `make help
 ### Testing
 
 ### Notification
-
 Notifications uses two functions to operate: 'add_commit_status' and 'get_commit_status'. They both utilize REST API and requests to communicate with Github. They update and read commit statuses respectively. When a commit is pushed a webhook activates the API endpoints in main that later goes through testing. The status gets updated accordingly. It is important to have a Github personal access token in environmental variables that authenticates the user.
 
 Unit testing is performed on a mockup that validates that a Github token exists and catches a bad request. Then 'add_commit_status' tries to change the status of a dummy commit and 'get_commit_status' reads it to see if it was successful.
 
 ### Links
+Use this link to access a list of all build logs: https://secretly-native-ant.ngrok-free.app/logs
+
+Then, access the build log you want to read by inserting the ID of it in the url: https://secretly-native-ant.ngrok-free.app/logs/{id}
 
 
 ## Statement of contributions
 
 ### Kam Ting Hoi
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I mainly worked on `clone_repo` and `setup_dependencies`, which were fundamental for the CI actions service (#10).
+
+Besides, I facilitated our group's development velocity by:
+- initializing the repository with basic file structures and function skeletons (#12, #14, #17).
+- containerising the application using docker for easier setup and deployment (#6).
+- adding basic utility functions for file operations (#9).
+
+Finally, I was responsible for various bug fixes and integrating the application (#54, #57).
 
 ### Johan Nilsson
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I worked on property 7 which was that the CI server keeps the history of the past builds and that it persists. I made each build accessible through its' own url with a main url which lists all builds. My work is located in src/modules/logs.py and tests are in tests/test_logs.py .I also reviewed some PRs.
 
 ### Marcello Krahforst
 
@@ -88,7 +103,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. 
 
 ### Arvid Hjort
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec eros orci. Nunc euismod et nulla eu pretium. Aenean vitae nisl dictum, semper nunc vel, faucibus velit. Proin eu viverra ante. Cras maximus enim odio, at pretium enim fermentum at. Nulla non ligula enim. Nullam eget lacus eget ex lacinia tempor sit amet quis est. Praesent eleifend erat eget magna feugiat congue. Cras accumsan neque eget erat consequat gravida. Cras posuere metus eget est tristique imperdiet.
+I worked primarily on core CI feature #3 - notification. Meaning that I worked and coded in files src/modules/notifications.py and tests/test_notifications.py. I also set up a Github token to authenticate the program so it could communicate with github.
 
 ## Way of working
 
