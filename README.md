@@ -70,6 +70,9 @@ Note: In case you are unsure about the available commands you can run `make help
 ### Testing
 
 ### Notification
+Notifications uses two functions to operate: 'add_commit_status' and 'get_commit_status'. They both utilize REST API and requests to communicate with Github. They update and read commit statuses respectively. When a commit is pushed a webhook activates the API endpoints in main that later goes through testing. The status gets updated accordingly. It is important to have a Github personal access token in environmental variables that authenticates the user.
+
+Unit testing is performed on a mockup that validates that a Github token exists and catches a bad request. Then 'add_commit_status' tries to change the status of a dummy commit and 'get_commit_status' reads it to see if it was successful.
 
 ### Links
 Use this link to access a list of all build logs: https://secretly-native-ant.ngrok-free.app/logs
