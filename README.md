@@ -67,7 +67,15 @@ Note: In case you are unsure about the available commands you can run `make help
 
 ### Static Syntax Check
 
+The static syntax check is done by executing the `run_linter_check` function which is called in the CI servers processing pipeline in the main function. The `run_linter_check` function executes a check with flake8 on the respective target folder with flags to only look for E9,F63,F82,F7 errors, which we deemed as indicating of potential syntax errors.
+
+Unit testing is performed by running the linting check on a series of fixture folders in the tests folder. Some folders contain code that should pass the check without triggering any errors and others contain code that are supposed to trigger the various errors we are checking for. The output of flake8 is then checked to make sure it contains certain keywords that indicate right behaviour.
+
 ### Testing
+
+Testing was implemented with the _unittest_ python library. Each function has its respective unittests in the _tests_ folder in order to test the functionality in a minimal way. The CI main function pipeline executes the `run_tests` function which in turn runs the shell command that initializes the tests inside a target folder and stores the output given after execution.
+
+Unit testing is performed by running the `run_tests` function inside of fixture folders in the tests folder. These fixtures contain very simple tests that should fail or tests that pass.
 
 ### Notification
 Notifications uses two functions to operate: 'add_commit_status' and 'get_commit_status'. They both utilize REST API and requests to communicate with Github. They update and read commit statuses respectively. When a commit is pushed a webhook activates the API endpoints in main that later goes through testing. The status gets updated accordingly. It is important to have a Github personal access token in environmental variables that authenticates the user.
@@ -78,7 +86,6 @@ Unit testing is performed on a mockup that validates that a Github token exists 
 Use this link to access a list of all build logs: https://secretly-native-ant.ngrok-free.app/logs
 
 Then, access the build log you want to read by inserting the ID of it in the url: https://secretly-native-ant.ngrok-free.app/logs/{id}
-
 
 ## Statement of contributions
 
